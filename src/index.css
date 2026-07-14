@@ -1,0 +1,390 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+
+/* ===========================
+   BASE STYLES
+   =========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #0A0B10;
+  color: #F8FAFC;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ===========================
+   TYPOGRAPHY
+   =========================== */
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #00C2FF 0%, #0066FF 50%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-green {
+  background: linear-gradient(135deg, #00D4AA 0%, #00A86B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===========================
+   GLASS MORPHISM CARDS
+   =========================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(0, 194, 255, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px -12px rgba(0, 102, 255, 0.2);
+}
+
+.glass-card-static {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* ===========================
+   BACKGROUND EFFECTS
+   =========================== */
+.hero-bg {
+  background: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 102, 255, 0.15) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 80% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 70%),
+    #0A0B10;
+}
+
+.section-bg-alt {
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dot-grid-bg {
+  background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 0);
+  background-size: 28px 28px;
+}
+
+/* ===========================
+   BUTTONS
+   =========================== */
+.btn-primary {
+  background: linear-gradient(135deg, #0066FF 0%, #004FCC 100%);
+  color: white;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.875rem 2rem;
+  transition: all 0.25s ease;
+  box-shadow: 0 8px 24px -4px rgba(0, 102, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px -4px rgba(0, 102, 255, 0.5);
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: #E2E8F0;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.875rem 2rem;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(255,255,255,0.12);
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.2);
+  transform: translateY(-1px);
+}
+
+/* ===========================
+   BADGE / PILL LABELS
+   =========================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  border: 1px solid;
+}
+
+.badge-blue {
+  background: rgba(0, 102, 255, 0.12);
+  color: #60A5FA;
+  border-color: rgba(0, 102, 255, 0.25);
+}
+
+.badge-green {
+  background: rgba(0, 212, 170, 0.12);
+  color: #34D399;
+  border-color: rgba(0, 212, 170, 0.25);
+}
+
+.badge-purple {
+  background: rgba(139, 92, 246, 0.12);
+  color: #A78BFA;
+  border-color: rgba(139, 92, 246, 0.25);
+}
+
+.badge-orange {
+  background: rgba(251, 146, 60, 0.12);
+  color: #FB923C;
+  border-color: rgba(251, 146, 60, 0.25);
+}
+
+/* ===========================
+   CERTIFICATION / COURSE CARDS
+   =========================== */
+.course-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.course-card:hover {
+  border-color: rgba(0, 194, 255, 0.3);
+  box-shadow: 0 0 30px -8px rgba(0, 102, 255, 0.25);
+  transform: translateY(-4px);
+}
+
+.course-card .card-accent-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #0066FF, #7C3AED);
+}
+
+/* ===========================
+   STATS COUNTER
+   =========================== */
+.stat-number {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00C2FF, #0066FF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===========================
+   NAVIGATION
+   =========================== */
+.navbar {
+  background: rgba(10, 11, 16, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.nav-link {
+  color: #94A3B8;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #F1F5F9;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #0066FF;
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* ===========================
+   SCROLLBAR
+   =========================== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0B10;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* ===========================
+   CERTIFICATION LOGO STRIP
+   =========================== */
+.logo-strip {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  animation: scroll-logos 25s linear infinite;
+}
+
+@keyframes scroll-logos {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ===========================
+   ANIMATIONS
+   =========================== */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 102, 255, 0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(0, 102, 255, 0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+/* ===========================
+   TABS
+   =========================== */
+.tab-active {
+  background: rgba(0, 102, 255, 0.12);
+  color: #60A5FA;
+  border: 1px solid rgba(0, 102, 255, 0.3);
+  border-radius: 9999px;
+}
+
+.tab-inactive {
+  color: #64748B;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  transition: all 0.2s;
+}
+
+.tab-inactive:hover {
+  color: #94A3B8;
+  background: rgba(255,255,255,0.04);
+}
+
+/* ===========================
+   FEATURE ICON BOX
+   =========================== */
+.feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 102, 255, 0.12);
+  border: 1px solid rgba(0, 102, 255, 0.2);
+  flex-shrink: 0;
+}
+
+/* ===========================
+   MODAL OVERLAY
+   =========================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* ===========================
+   PROGRESS BAR
+   =========================== */
+.progress-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0066FF, #00C2FF);
+  border-radius: 999px;
+  transition: width 0.8s ease;
+}
+
+/* ===========================
+   CISCO BRAND ELEMENTS
+   =========================== */
+.cisco-accent {
+  color: #049FD9;
+}
+
+.cisco-bg {
+  background: rgba(4, 159, 217, 0.1);
+  border-color: rgba(4, 159, 217, 0.25);
+}
+
+/* ===========================
+   DIVIDER
+   =========================== */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
