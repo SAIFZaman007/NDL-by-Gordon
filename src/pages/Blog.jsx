@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, ChevronRight } from 'lucide-react';
-import apiClient from '../api/client';
+import apiClient, { API_BASE } from '../api/client';
+
+// Admin-uploaded cover images are stored as relative paths
+const API_ORIGIN = API_BASE.replace(/\/api\/?$/, '');
+const resolveImageUrl = (url) => (url && url.startsWith('/') ? `${API_ORIGIN}${url}` : url);
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -45,7 +49,7 @@ function Blog() {
               <div>
                 <div className="card-accent-bar" />
                 {post.coverImage && (
-                  <img src={post.coverImage} alt={post.title} className="w-full h-40 object-cover opacity-75" />
+                  <img src={resolveImageUrl(post.coverImage)} alt={post.title} loading="lazy" className="w-full h-40 object-cover opacity-75" />
                 )}
                 <div className="p-7 space-y-4">
                   <div className="flex items-center justify-between">
@@ -79,7 +83,7 @@ function Blog() {
             </button>
 
             {selectedPost.coverImage && (
-              <img src={selectedPost.coverImage} alt={selectedPost.title} className="w-full h-64 object-cover rounded-2xl opacity-80" />
+              <img src={resolveImageUrl(selectedPost.coverImage)} alt={selectedPost.title} className="w-full h-64 object-cover rounded-2xl opacity-80" />
             )}
 
             <div className="space-y-4">
