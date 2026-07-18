@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { CheckCircle2, XCircle, Loader2 } from 'lucide-react';
+import { CheckCircle2, XCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import apiClient from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
@@ -24,7 +24,19 @@ function PaymentResult({ status }) {
         setState('success');
       })
       .catch(err => {
-        setState('error');
+        const httpStatus = err.response?.status;
+        // The backend distinguishes a legitimate "payment didn't go
+        // through" outcome (400 — e.g. the session expired, or was never
+        // completed) from a genuine, unexpected server problem (500 or no
+        // response at all, e.g. a network error). Those are different
+        // situations for the user, so they get different pages: a clear
+        // Failure page they can act on ("try again"), versus a rarer
+        // Something-went-wrong page for cases that need support's help.
+        if (httpStatus === 400) {
+          setState('failed');
+        } else {
+          setState('error');
+        }
         setError(err.response?.data?.detail || 'We could not verify this payment.');
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,6 +66,21 @@ function PaymentResult({ status }) {
     );
   }
 
+  if (state === 'failed') {
+    return (
+      <div className="max-w-md mx-auto text-center py-24 space-y-5">
+        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center mx-auto">
+          <AlertTriangle className="h-7 w-7 text-amber-400" />
+        </div>
+        <h1 className="font-display text-2xl font-bold text-white">Payment Failed</h1>
+        <p className="text-slate-400">{error} No charge was completed — you have not been billed.</p>
+        <Link to="/pricing" className="btn-primary inline-flex items-center space-x-2">
+          <span>Try Again</span>
+        </Link>
+      </div>
+    );
+  }
+
   if (state === 'error') {
     return (
       <div className="max-w-md mx-auto text-center py-24 space-y-5">
@@ -62,6 +89,7 @@ function PaymentResult({ status }) {
         </div>
         <h1 className="font-display text-2xl font-bold text-white">Something went wrong</h1>
         <p className="text-slate-400">{error}</p>
+        <p className="text-slate-600 text-xs">If you were charged, contact support with your session reference and we'll sort it out.</p>
         <Link to="/pricing" className="btn-primary inline-flex items-center space-x-2">
           <span>Back to Pricing</span>
         </Link>
