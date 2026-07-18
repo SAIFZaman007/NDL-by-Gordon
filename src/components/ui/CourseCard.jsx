@@ -1,6 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Star, Play, ChevronRight, BookOpen } from 'lucide-react';
+import { API_BASE } from '../../api/client';
+
+// Admin-uploaded thumbnails are stored as relative paths
+// ("/uploads/courses/<file>") and served from the backend origin, while
+// seeded/legacy courses hold absolute "https://..." URLs. Resolve both so
+// every course's thumbnail renders correctly wherever this site is
+// deployed. (Same pattern as frontend/src/pages/Blog.jsx.)
+const API_ORIGIN = API_BASE.replace(/\/api\/?$/, '');
+const resolveImageUrl = (url) => (url && url.startsWith('/') ? `${API_ORIGIN}${url}` : url);
 
 function difficultyBadgeClass(difficulty) {
   if (difficulty === 'Advanced') return 'badge-orange';
@@ -16,7 +25,7 @@ function CourseCard({ course, progress, actionLabel = 'View Course' }) {
     <Link to={`/courses/${course.id}`} className="course-card flex flex-col">
       <div className="card-accent-bar" />
       {course.thumbnailUrl && (
-        <img src={course.thumbnailUrl} alt={course.title} className="w-full h-44 object-cover opacity-80" />
+        <img src={resolveImageUrl(course.thumbnailUrl)} alt={course.title} loading="lazy" className="w-full h-44 object-cover opacity-80" />
       )}
       <div className="p-5 flex flex-col flex-grow space-y-4">
         <div className="flex items-center justify-between">
