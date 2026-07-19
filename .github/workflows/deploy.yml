@@ -1,33 +1,60 @@
-name: Deploy to GitHub Pages
+name: Frontend CI/CD - Hostinger VPS Deploy
 
 on:
   push:
     branches:
       - main
-
-permissions:
-  contents: write
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    env:
-      # Set these under Settings → Secrets and variables → Actions → Variables
-      # in this repository. Nothing live/production is hardcoded in this file —
-      # that was the exact problem being fixed here.
-      VITE_API_BASE: ${{ vars.VITE_API_BASE }}
-      VITE_DASHBOARD_URL: ${{ vars.VITE_DASHBOARD_URL }}
+  deploy:
+    name: Deploy to Hostinger VPS
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install and Build 🔧
-        run: |
-          npm install
-          npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Copy project files to VPS
+        uses: appleboy/scp-action@v0.1.7
         with:
-          folder: dist
-          branch: gh-pages
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          source: "."
+          target: "~/gordon-frontend"
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          script: |
+            set -e
+            echo "=== Starting frontend deployment ==="
+            cd ~/gordon-frontend
+
+            echo "=== Rebuilding Docker image ==="
+            docker build \
+              --build-arg VITE_API_BASE="https://api.networkdesignlabs.nl/api" \
+              --build-arg VITE_DASHBOARD_URL="https://dashboard.networkdesignlabs.nl" \
+              -t gordon-frontend .
+
+            echo "=== Ensuring Docker Network exists ==="
+            docker network create gordon-net || true
+
+            echo "=== Stopping old container ==="
+            docker stop gordon-frontend-container || true
+            docker rm gordon-frontend-container || true
+
+            echo "=== Starting new container ==="
+            docker run -d \
+              --name gordon-frontend-container \
+              --network gordon-net \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              gordon-frontend
+
+            echo "=== Deployment completed successfully! ==="
