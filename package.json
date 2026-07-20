@@ -3,10 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Gordon IT Academy — public customer/student site (marketing pages + student portal).",
+  "description": "Gordon IT Academy \u2014 public customer/student site (marketing pages + student portal).",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "node init && vite",
+    "build": "node init && vite build",
     "lint": "oxlint",
     "preview": "vite preview"
   },
